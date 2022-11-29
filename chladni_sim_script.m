@@ -7,12 +7,12 @@ width = pi;
 %% and find different patterns
 n = 1;
 m = 1;
-a, bnm = define_constants(length, width, n, m);
-
 %initial conditions u(x, y, 0) = func_init(x, y)
-%% specific initial displacements result in Chladni patterns
-%% and nodal lines
+%% must be a periodic function - maybe we can manipulate this too
+%% and see what happens?
 func_init = @(x, y) sin(a*x)*sin(y);
+%resulting constants
+a, bnm = define_constants(length, width, n, m);
 
 %making the MATLAB mesh
 [x, y] = meshgrid(0:0.1:pi);
@@ -25,10 +25,12 @@ mesh(x, y, z)
 %displaying the resulting Chladni patterns
 
 %%LOCAL FUNCTIONS
-function [a, bnm] = define_constants(l, w, n, m)
-    %define constants
+function [a, bnm] = define_constants()
+    %define a
     a = w/l;
-    bnm = 1;
+    %define b
+    func = @(x,y) func_init*sin(a*n*x)*sin(m*y);
+    bnm = (4*a/(pi^2))*integral2(func, 0, (pi/n), 0, pi);
 end
 
 function u = wave(t)
