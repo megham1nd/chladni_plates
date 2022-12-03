@@ -13,21 +13,31 @@ a = width/length;
 func_init = sin(a*X).*sin(Y);
 
 %mesh(x, y, z)
-
 %making the wave function simulation
+figure;
+hold('on');
+video = VideoWriter('chladni_sim.avi');
+open(video);
+for t = 0:100
+    mesh(X, Y, wave(t))
+    drawnow;
+    writeVideo(video, getframe(gcf));
+end
+hold('off');
+close(video);
 
 %displaying the resulting Chladni patterns
 
 %%LOCAL FUNCTIONS
 function bnm = define_bnm(n, m)
     %define b
-    func = func_init.*sin(a*n*X).*sin(m*Y); %MAKE THIS MESHGRID
+    func = func_init.*sin(a*n*X).*sin(m*Y); 
     bnm = (4*a/(pi^2))*integral2(func, 0, (pi/n), 0, pi);
 end
 
-function z = wave(t)
+function Z = wave(t)
     %wave as a function of time
     syms n m;
-    z = symsum(symsum(define_bnm(n, m)*sin(a*n.*X)*sin(m.*Y)*cos(sqrt(a^2*n^2+m^2*t)), m, 1, inf), n, 1, inf);
+    Z = symsum(symsum(define_bnm(n, m)*sin(a*n*X).*sin(m*Y)*cos(sqrt((a^2*n^2)+(m^2*t))), m, 1, inf), n, 1, inf);
 end
 
