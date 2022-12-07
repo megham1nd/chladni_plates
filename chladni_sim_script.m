@@ -5,16 +5,31 @@ width = pi;
 a = width/length;
 
 %making the MATLAB mesh
-[X, Y] = meshgrid(0:0.1:3.2);
+[X, Y] = meshgrid(0:0.01:3.2);
 
 %mesh(x, y, z)
 %making the wave function simulation
+%two figure windows for two views
+f1 = figure;
+f2 = figure;
+
 for t = 0:0.1:100
-    mesh(X, Y, wave(X, Y, a, t))
+    Z = wave(X, Y, a, t);
+
+    %regular view
+    figure(f1);
+    surf(X, Y, Z, "EdgeColor","none");
     xlabel('x')
     ylabel('y')
     zlabel('z')
     axis ([0 3.2 0 3.2 -1 1]);
+    
+    %top down view
+    figure(f2);
+    surf(X, Y, Z, "EdgeColor","none");
+    view(0, 90);
+    axis([0 3.2 0 3.2]);
+    
     pause(0.1);
 end
 
