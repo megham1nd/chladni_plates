@@ -1,23 +1,29 @@
-%define dimensions of the membrane
-length = pi;
-width = pi;
+%define dimensions of square membrane
+l = pi;
 %define a
-a = width/length;
+%a = width/length;
+%constants
+m = 4;
+n = 5;
+kx = m*pi/l;
+ky = n*pi/l;
+A = 1;
+B = 1;
 %define initial velocity
 v = 1;
+w = v * sqrt(kx^2+ky^2);
+%characteristic frequency
+%gamma_mn = c*pi*sqrt((m^2/length^2)+(n^2/width^2));
 
 %making the MATLAB mesh
-[X, Y] = meshgrid(0:0.01:3.2);
+[X, Y] = meshgrid(-l:0.01:l);
+
 
 %making the wave function simulation
-%two figure windows for two views
-%f1 = figure;
-%f2 = figure;
-
 t_final = 10;
 
-for t = 0:0.1:t_final
-    Z = wave(X, Y, a, t);
+for t = 0:0.05:t_final
+    Z = (A*sin(X*kx).*sin(Y*ky))+(B*sin(kx*Y).*sin(ky*X)*sin(w*t));
 
     %regular view
     %figure(f1);
@@ -26,7 +32,7 @@ for t = 0:0.1:t_final
     xlabel('x')
     ylabel('y')
     zlabel('z')
-    axis ([0 4 0 4 -1 1]);
+    axis ([0 4 0 4 -4 4]);
     
     %top down view
     %figure(f2);
@@ -49,21 +55,4 @@ end
 %bypass complicated constants by using Runge-Kutta approximation of second
 %order PDE
 
-
-
-%%LOCAL FUNCTIONS
-function bnm = define_bnm(x, y, a, n, m)
-    %define b 
-    %func_init = sin(a*x).*sin(y);
-    %func = func_init.*sin(a*n*x).*sin(m*y); 
-    bnm = (4*a/(pi^2))*integral2((sin(a*x).*sin(y).*sin(a*n*x).*sin(m*y)), 0, (pi/n), 0, pi);
-end
-
-%for f(init) = sin(anx)*sin(y), m=n=1
-function Z = wave(x, y, a, t)
-    %wave as a function of time
-    %syms n m;
-    %Z = symsum(symsum(define_bnm(X, Y, a, n, m)*sin(a*n*X).*sin(m*Y)*cos(sqrt((a^2*n^2)+(m^2*t))), m, 1, inf), n, 1, inf);
-    Z = sin(a*x).*sin(y)*cos(sqrt(a^2+1)*t);
-end
 
