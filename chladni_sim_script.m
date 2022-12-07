@@ -3,37 +3,53 @@ length = pi;
 width = pi;
 %define a
 a = width/length;
+%define initial velocity
+v = 1;
 
 %making the MATLAB mesh
 [X, Y] = meshgrid(0:0.01:3.2);
 
-%mesh(x, y, z)
 %making the wave function simulation
 %two figure windows for two views
-f1 = figure;
-f2 = figure;
+%f1 = figure;
+%f2 = figure;
 
-for t = 0:0.1:100
+t_final = 10;
+
+for t = 0:0.1:t_final
     Z = wave(X, Y, a, t);
 
     %regular view
-    figure(f1);
-    surf(X, Y, Z, "EdgeColor","none");
+    %figure(f1);
+    subplot(1,2,1)
+    p1 = surf(X, Y, Z, "EdgeColor","none");
     xlabel('x')
     ylabel('y')
     zlabel('z')
-    axis ([0 3.2 0 3.2 -1 1]);
+    axis ([0 4 0 4 -1 1]);
     
     %top down view
-    figure(f2);
-    surf(X, Y, Z, "EdgeColor","none");
+    %figure(f2);
+    subplot(1,2,2)
+    p2 = surf(X, Y, Z, "EdgeColor","none");
     view(0, 90);
-    axis([0 3.2 0 3.2]);
+    axis([0 pi 0 pi]);
     
-    pause(0.1);
+    hold on
+    pause(0.01);
+
+    if(t ~= t_final)
+       delete(p1);
+       delete(p2);
+    end
 end
 
-%displaying the resulting Chladni patterns
+%resulting Chladni patterns will be displayed in top-down view!
+
+%bypass complicated constants by using Runge-Kutta approximation of second
+%order PDE
+
+
 
 %%LOCAL FUNCTIONS
 function bnm = define_bnm(x, y, a, n, m)
@@ -43,6 +59,7 @@ function bnm = define_bnm(x, y, a, n, m)
     bnm = (4*a/(pi^2))*integral2((sin(a*x).*sin(y).*sin(a*n*x).*sin(m*y)), 0, (pi/n), 0, pi);
 end
 
+%for f(init) = sin(anx)*sin(y), m=n=1
 function Z = wave(x, y, a, t)
     %wave as a function of time
     %syms n m;
