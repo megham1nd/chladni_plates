@@ -3,12 +3,12 @@ l = pi;
 %define a
 %a = width/length;
 %constants
-m = 4;
-n = 5;
+m = 2;
+n = 7;
 kx = m*pi/l;
 ky = n*pi/l;
 A = 1;
-B = 1;
+B = -1;
 %define initial velocity
 v = 1;
 w = v * sqrt(kx^2+ky^2);
@@ -17,7 +17,6 @@ w = v * sqrt(kx^2+ky^2);
 
 %making the MATLAB mesh
 [X, Y] = meshgrid(-l:0.01:l);
-
 
 %making the wave function simulation
 t_final = 10;
