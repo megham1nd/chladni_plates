@@ -3,12 +3,12 @@ l = pi;
 %define a
 %a = width/length;
 %constants
+A = 1;
+B = 1;
 m = 2;
-n = 7;
+m = 5;
 kx = m*pi/l;
 ky = n*pi/l;
-A = 1;
-B = -1;
 %define initial velocity
 v = 1;
 w = v * sqrt(kx^2+ky^2);
@@ -21,6 +21,7 @@ w = v * sqrt(kx^2+ky^2);
 %making the wave function simulation
 t_final = 10;
 
+Z = zeros(size(X, 2), size(Y, 2));
 for t = 0:0.05:t_final
     Z = (A*sin(X*kx).*sin(Y*ky))+(B*sin(kx*Y).*sin(ky*X)*sin(w*t));
 
@@ -50,8 +51,5 @@ for t = 0:0.05:t_final
 end
 
 %resulting Chladni patterns will be displayed in top-down view!
-
-%bypass complicated constants by using Runge-Kutta approximation of second
-%order PDE
 
 
